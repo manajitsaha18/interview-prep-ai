@@ -2,22 +2,43 @@ import React, { useState, useRef } from 'react'
 import "../style/dashboard.scss"
 import { useInterview } from '../hooks/useInterview.js'
 import { useNavigate } from 'react-router-dom'
+import DeleteConfirmationModal from '../../../components/DeleteConfirmationModal.jsx'
 
 const Dashboard = () => {
 
-    const { loading, generateReport,reports } = useInterview()
-    const [ jobDescription, setJobDescription ] = useState("")
-    const [ selfDescription, setSelfDescription ] = useState("")
+    const { loading, generateReport, reports, removeInterviewReport} = useInterview()
+    const [jobDescription, setJobDescription] = useState("")
+    const [selfDescription, setSelfDescription] = useState("")
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [selectedReport, setSelectedReport] = useState(null);
     const resumeInputRef = useRef()
 
     const navigate = useNavigate()
 
     const handleGenerateReport = async () => {
-        const resumeFile = resumeInputRef.current.files[ 0 ]
+        const resumeFile = resumeInputRef.current.files[0]
         const data = await generateReport({ jobDescription, selfDescription, resumeFile })
         navigate(`/interview/${data._id}`)
     }
+    const handleDeleteInterview = async () => {
 
+    if (!selectedReport) return;
+
+    try {
+
+        await removeInterviewReport(selectedReport._id);
+
+        setDeleteModalOpen(false);
+        setSelectedReport(null);
+
+    } catch (error) {
+
+        console.error(error);
+        alert("Failed to delete interview report.");
+
+    }
+
+}
     if (loading) {
         return (
             <main className='loading-screen'>
@@ -128,10 +149,42 @@ const Dashboard = () => {
                     <h2>My Recent Interview Plans</h2>
                     <ul className='reports-list'>
                         {reports.map(report => (
-                            <li key={report._id} className='report-item' onClick={() => navigate(`/interview/${report._id}`)}>
-                                <h3>{report.title || 'Untitled Position'}</h3>
-                                <p className='report-meta'>Generated on {new Date(report.createdAt).toLocaleDateString()}</p>
-                                <p className={`match-score ${report.matchScore >= 80 ? 'score--high' : report.matchScore >= 60 ? 'score--mid' : 'score--low'}`}>Match Score: {report.matchScore}%</p>
+                            <li
+                                key={report._id}
+                                className="report-item"
+                                onClick={() => navigate(`/interview/${report._id}`)}
+                            >
+                                <div className="report-header">
+                                    <h3>{report.title || "Untitled Position"}</h3>
+
+                                    <button
+                                        className="delete-btn"
+                                        title="Delete Interview"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+
+                                            setSelectedReport(report);
+                                            setDeleteModalOpen(true);
+                                        }}
+                                    >
+                                        <i className="ti ti-trash"></i>
+                                    </button>
+                                </div>
+
+                                <p className="report-meta">
+                                    Generated on {new Date(report.createdAt).toLocaleDateString()}
+                                </p>
+
+                                <p
+                                    className={`match-score ${report.matchScore >= 80
+                                        ? "score--high"
+                                        : report.matchScore >= 60
+                                            ? "score--mid"
+                                            : "score--low"
+                                        }`}
+                                >
+                                    Match Score: {report.matchScore}%
+                                </p>
                             </li>
                         ))}
                     </ul>
@@ -144,6 +197,14 @@ const Dashboard = () => {
                 <a href='#'>Terms of Service</a>
                 <a href='#'>Help Center</a>
             </footer>
+            <DeleteConfirmationModal
+                isOpen={deleteModalOpen}
+                onClose={() => {
+                    setDeleteModalOpen(false);
+                    setSelectedReport(null);
+                }}
+                onConfirm={handleDeleteInterview}
+            />
         </div>
     )
 }

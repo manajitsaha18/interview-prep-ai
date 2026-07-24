@@ -22,4 +22,6 @@ interviewRouter.post("/resume/pdf/:interviewReportId", authMiddleware.authUser, 
 
 
 
+interviewRouter.delete("/:interviewReportId", authMiddleware.authUser, interviewController.deleteInterviewReportController)
+
 module.exports = interviewRouter;

@@ -3,11 +3,11 @@ const { generateInterviewReport, generateResumePdf } = require('../services/ai.s
 const interviewReportModel = require('../models/interviewReport.model');
 
 
- 
-async function generateInterviewReportController(req, res){
+
+async function generateInterviewReportController(req, res) {
 
     try {
-        
+
         const resumeContent = await (new pdfParse.PDFParse(Uint8Array.from(req.file.buffer))).getText()
 
         const { selfDescription, jobDescription } = req.body;
@@ -97,4 +97,27 @@ async function generateResumePdfController(req, res) {
 }
 
 
-module.exports = { generateInterviewReportController, getInterviewReportByIdController, getAllInterviewReportsController, generateResumePdfController }
+async function deleteInterviewReportController(req, res) {
+    const { interviewReportId } = req.params;
+
+    const interviewReport = await interviewReportModel.findOneAndDelete({
+        _id: interviewReportId,
+        user: req.user.id,
+    });
+
+    if (!interviewReport) {
+        return res.status(404).json({
+            message: "Interview report not found.",
+        });
+    }
+
+    res.status(200).json({
+        message: "Interview report deleted successfully.",
+    });
+}
+
+
+module.exports = {
+    generateInterviewReportController, getInterviewReportByIdController, getAllInterviewReportsController, generateResumePdfController,
+    deleteInterviewReportController
+}
