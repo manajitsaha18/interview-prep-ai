@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react'
-import "../style/home.scss"
+import "../style/dashboard.scss"
 import { useInterview } from '../hooks/useInterview.js'
 import { useNavigate } from 'react-router-dom'
 
-const Home = () => {
+const Dashboard = () => {
 
     const { loading, generateReport,reports } = useInterview()
     const [ jobDescription, setJobDescription ] = useState("")
@@ -27,7 +27,7 @@ const Home = () => {
     }
 
     return (
-        <div className='home-page'>
+        <div className='dashboard-page'>
 
             {/* Page Header */}
             <header className='page-header'>
@@ -148,4 +148,4 @@ const Home = () => {
     )
 }
 
-export default Home
+export default Dashboard
