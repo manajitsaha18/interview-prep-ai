@@ -80,8 +80,13 @@ const Interview = () => {
     }
 
     const scoreColor =
-        report.matchScore >= 80 ? 'score--high' :
-            report.matchScore >= 60 ? 'score--mid' : 'score--low'
+        report.matchScore === null
+            ? "score--na"
+            : report.matchScore >= 80
+                ? "score--high"
+                : report.matchScore >= 60
+                    ? "score--mid"
+                    : "score--low";
 
 
     return (
@@ -170,10 +175,25 @@ const Interview = () => {
                         <div className='match-score'>
                             <p className='match-score__label'>Match Score</p>
                             <div className={`match-score__ring ${scoreColor}`}>
-                                <span className='match-score__value'>{report.matchScore}</span>
-                                <span className='match-score__pct'>%</span>
+                                <span className='match-score__value'>
+                                    {report.matchScore !== null ? report.matchScore : "—"}
+                                </span>
+
+                                {report.matchScore !== null && (
+                                    <span className='match-score__pct'>%</span>
+                                )}
                             </div>
-                            <p className='match-score__sub'>Strong match for this role</p>
+                            <p className='match-score__sub'>
+                                {report.matchScore === null
+                                    ? "Upload your resume or self description to calculate your match score."
+                                    : report.matchScore >= 80
+                                        ? "Strong match for this role"
+                                        : report.matchScore >= 60
+                                            ? "Good match for this role"
+                                            : report.matchScore >= 40
+                                                ? "Fair match for this role"
+                                                : "Needs improvement"}
+                            </p>
                         </div>
 
                         <div className='sidebar-divider' />

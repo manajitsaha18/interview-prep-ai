@@ -8,19 +8,35 @@ async function generateInterviewReportController(req, res) {
 
     try {
 
-        const resumeContent = await (new pdfParse.PDFParse(Uint8Array.from(req.file.buffer))).getText()
-
         const { selfDescription, jobDescription } = req.body;
 
+        if (!jobDescription?.trim()) {
+            return res.status(400).json({
+                message: "Job description is required."
+            });
+        }
+
+        let resumeText = "";
+
+        if (req.file) {
+            const resumeContent = await (
+                new pdfParse.PDFParse(
+                    Uint8Array.from(req.file.buffer)
+                )
+            ).getText();
+
+            resumeText = resumeContent.text;
+        }
+
         const interViewReportByAi = await generateInterviewReport({
-            resume: resumeContent.text,
+            resume: resumeText,
             selfDescription,
             jobDescription
         });
 
         const interviewReport = await interviewReportModel.create({
             user: req.user.id,
-            resume: resumeContent.text,
+            resume: resumeText,
             selfDescription,
             jobDescription,
             ...interViewReportByAi
@@ -30,11 +46,18 @@ async function generateInterviewReportController(req, res) {
             message: "Interview report generated successfully",
             interviewReport
         });
+
     } catch (error) {
         console.error(error);
 
+        if (error.status === 429) {
+            return res.status(429).json({
+                message: "AI request limit reached. Please try again later."
+            });
+        }
+
         res.status(500).json({
-            message: "Internal Server Error",
+            message: "Internal Server Error"
         });
     }
 

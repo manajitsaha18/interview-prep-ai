@@ -9,7 +9,9 @@ const ai = new GoogleGenAI({
 
 
 const interviewReportSchema = z.object({
-    matchScore: z.number().describe("A score between 0 and 100 indicating how well the candidate's profile matches the job describe"),
+    matchScore: z.number().min(0).max(100).nullable().describe(
+        "A score between 0 and 100 comparing the candidate profile with the job description. Return null if neither a Resume nor a Self Description is provided."
+    ),
     technicalQuestions: z.array(z.object({
         question: z.string().describe("The technical question can be asked in the interview"),
         intention: z.string().describe("The intention of interviewer behind asking this question"),
@@ -22,7 +24,7 @@ const interviewReportSchema = z.object({
     })).describe("Behavioral questions that can be asked in the interview along with their intention and how to answer them"),
     skillGaps: z.array(z.object({
         skill: z.string().describe("The skill which the candidate is lacking"),
-        severity: z.enum([ "low", "medium", "high" ]).describe("The severity of this skill gap, i.e. how important is this skill for the job and how much it can impact the candidate's chances")
+        severity: z.enum(["low", "medium", "high"]).describe("The severity of this skill gap, i.e. how important is this skill for the job and how much it can impact the candidate's chances")
     })).describe("List of skill gaps in the candidate's profile along with their severity"),
     preparationPlan: z.array(z.object({
         day: z.number().describe("The day number in the preparation plan, starting from 1"),
@@ -35,11 +37,40 @@ const interviewReportSchema = z.object({
 async function generateInterviewReport({ resume, selfDescription, jobDescription }) {
 
 
-    const prompt = `Generate an interview report for a candidate with the following details:
-                        Resume: ${resume}
-                        Self Description: ${selfDescription}
-                        Job Description: ${jobDescription}
-`
+    let prompt = `Generate a personalized interview preparation report based on the following information.\n\n`;
+
+    prompt += `Job Description:\n${jobDescription}\n\n`;
+
+    if (resume?.trim()) {
+        prompt += `Candidate Resume:\n${resume}\n\n`;
+    }
+
+    if (selfDescription?.trim()) {
+        prompt += `Candidate Self Description:\n${selfDescription}\n\n`;
+    }
+
+    prompt += `
+Instructions:
+- Job Description is the primary source of truth.
+- Resume and Self Description are optional and should only be used to personalize the report.
+- If Resume or Self Description is not provided, do not assume any missing information.
+- Generate realistic interview questions.
+- Calculate a match score ONLY when at least one of the following is provided:
+  - Candidate Resume
+  - Candidate Self Description
+
+- If neither the Resume nor the Self Description is provided:
+  - Set matchScore to null.
+  - Do NOT guess or estimate a score.
+
+- A match score compares the candidate profile against the job requirements. If there is no candidate information, there is nothing to compare.
+- Identify skill gaps only from the available candidate information.
+
+- If neither Resume nor Self Description is provided:
+  - Do NOT list candidate skill gaps.
+  - Instead, explain that more candidate information is needed to perform a meaningful skill-gap analysis.
+- Create a practical preparation plan.
+`;
 
     const response = await ai.models.generateContent({
         model: "gemini-3.6-flash",

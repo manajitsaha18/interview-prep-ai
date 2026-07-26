@@ -394,7 +394,11 @@ $severity-low: #3fb950;
         align-items: center;
         justify-content: center;
         border: 4px solid;
-
+        &.score--na {
+            border-color: #6b7280;
+            color: #9ca3af;
+        }
+        
         &.score--high {
             border-color: $severity-low;
         }
