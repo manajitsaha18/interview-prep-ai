@@ -1,4 +1,3 @@
-import React from 'react'
 import './landing.scss'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../features/auth/hooks/useAuth'
@@ -53,7 +52,7 @@ const Landing = () => {
 
             {/* Navbar */}
             <nav className='landing-nav'>
-                <div className='landing-nav__brand'>
+                <div className='landing-nav__brand' onClick={() => navigate("/")}>
                     Interview Prep <span className='highlight'>AI</span>
                 </div>
                 <div className='landing-nav__links'>

@@ -49,7 +49,7 @@ export const useAuth = () => {
     const handleLogout = async () => {
         setLoading(true);
         try {
-            const data = await logout();
+            await logout();
             setUser(null);
             toast.success("Logged out successfully!");
         } catch (error) {
@@ -66,7 +66,7 @@ export const useAuth = () => {
             try {
                 const data = await getMe();
                 setUser(data.user);
-            } catch (error) {
+            } catch {
                 setUser(null);
             } finally {
                 setLoading(false);
