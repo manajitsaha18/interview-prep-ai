@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import React, { useState, useRef } from 'react'
 import "../style/dashboard.scss"
 import { useInterview } from '../hooks/useInterview.js'
@@ -6,7 +7,7 @@ import DeleteConfirmationModal from '../../../components/DeleteConfirmationModal
 
 const Dashboard = () => {
 
-    const { loading, generateReport, reports, removeInterviewReport} = useInterview()
+    const { loading, generateReport, reports, removeInterviewReport } = useInterview()
     const [jobDescription, setJobDescription] = useState("")
     const [selfDescription, setSelfDescription] = useState("")
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -16,35 +17,40 @@ const Dashboard = () => {
     const navigate = useNavigate()
 
     const handleGenerateReport = async () => {
-        const resumeFile = resumeInputRef.current.files[0]
-        const data = await generateReport({ jobDescription, selfDescription, resumeFile })
-        navigate(`/interview/${data._id}`)
+        try {
+            const resumeFile = resumeInputRef.current.files[0];
+            const data = await generateReport({
+                jobDescription,
+                selfDescription,
+                resumeFile
+            });
+            toast.success("Interview report generated successfully!");
+            navigate(`/interview/${data._id}`);
+        } catch (error) {
+            console.error(error);
+            toast.error(
+                error.response?.data?.message ||
+                "Failed to generate interview report."
+            );
+        }
     }
     const handleDeleteInterview = async () => {
 
-    if (!selectedReport) return;
+        if (!selectedReport) return;
 
-    try {
+        try {
 
-        await removeInterviewReport(selectedReport._id);
+            await removeInterviewReport(selectedReport._id);
+            toast.success("Interview report deleted successfully!");
+            setDeleteModalOpen(false);
+            setSelectedReport(null);
 
-        setDeleteModalOpen(false);
-        setSelectedReport(null);
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to delete interview report.");
 
-    } catch (error) {
+        }
 
-        console.error(error);
-        alert("Failed to delete interview report.");
-
-    }
-
-}
-    if (loading) {
-        return (
-            <main className='loading-screen'>
-                <h1>Loading your interview plan...</h1>
-            </main>
-        )
     }
 
     return (
@@ -136,10 +142,22 @@ const Dashboard = () => {
                     <span className='footer-info'>AI-Powered Strategy Generation &bull; Approx 30s</span>
                     <button
                         onClick={handleGenerateReport}
-                        className='generate-btn'>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" /></svg>
-                        Generate My Interview Strategy
+                        className="generate-btn"
+                        disabled={loading}
+                    >
+                        {loading ? (
+                            <>
+                                <span className="spinner"></span>
+                                Generating...
+                            </>
+                        ) : (
+                            <>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" /></svg>
+                                Generate My Interview Strategy
+                            </>
+                        )}
                     </button>
+
                 </div>
             </div>
 

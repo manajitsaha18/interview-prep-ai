@@ -12,10 +12,15 @@ const Login = () => {
     const [password, setPassword] = useState('')
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
-        await handleLogin({ email, password })
-        navigate('/')
+    e.preventDefault();
+
+    try {
+        await handleLogin({ email, password });
+        navigate("/");
+    } catch (error) {
+        // Toast is already shown in useAuth.js
     }
+}
 
     if (loading) {
         return (
