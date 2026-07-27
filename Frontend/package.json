@@ -12,6 +12,7 @@
   "dependencies": {
     "@tabler/icons-webfont": "^3.45.0",
     "axios": "^1.18.1",
+    "firebase": "^12.16.0",
     "lucide-react": "^1.25.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",

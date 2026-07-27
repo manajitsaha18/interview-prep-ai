@@ -1,5 +1,6 @@
 import axios from 'axios';
-
+import { auth, provider } from "./googleAuth";
+import { signInWithPopup } from "firebase/auth";
 
 const api = axios.create({
     baseURL: 'http://localhost:3000',
@@ -17,6 +18,7 @@ export async function register({ username, email, password }) {
 
     } catch (error) {
         console.error(error);
+        throw error;
     }
 }
 
@@ -31,6 +33,7 @@ export async function login({ email, password }) {
 
     } catch (error) {
         console.error(error);
+        throw error;
     }
 }
 
@@ -43,6 +46,7 @@ export async function logout() {
         
     } catch (error) {
         console.error(error);
+        throw error;
     }
 }
 
@@ -57,4 +61,17 @@ export async function getMe() {
         console.error(error);
         throw error;
     }
+}
+
+
+export async function googleLogin() {
+    const result = await signInWithPopup(auth, provider);
+
+    const idToken = await result.user.getIdToken();
+
+    const response = await api.post("/api/auth/google", {
+        idToken,
+    });
+
+    return response.data;
 }

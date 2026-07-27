@@ -12,5 +12,7 @@ authRouter.get('/logout', authController.logoutUserController);
 
 authRouter.get('/get-me', authMiddleware.authUser, authController.getMeController);
 
+authRouter.post("/google", authController.googleLoginController);
+
 
 module.exports = authRouter;

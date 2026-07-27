@@ -5,22 +5,30 @@ import { useAuth } from '../hooks/useAuth'
 
 const Login = () => {
 
-    const { loading, handleLogin } = useAuth()
+    const { loading, handleLogin, handleGoogleLogin } = useAuth()
     const navigate = useNavigate()
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    const handleGoogleLoginClick = async () => {
+        try {
+            await handleGoogleLogin();
+            navigate("/");
+        } catch (error) {
+            console.error(error);
+        }
+    };
     const handleSubmit = async (e) => {
-    e.preventDefault();
+        e.preventDefault();
 
-    try {
-        await handleLogin({ email, password });
-        navigate("/");
-    } catch(error) {
-        console.error(error)
+        try {
+            await handleLogin({ email, password });
+            navigate("/");
+        } catch (error) {
+            console.error(error)
+        }
     }
-}
 
     if (loading) {
         return (
@@ -60,9 +68,20 @@ const Login = () => {
                         />
                     </div>
                     <button
+                        type="submit"
                         className="button primary-button"
+                        disabled={loading}
                     >
                         Login
+                    </button>
+
+                    <button
+                        type="button"
+                        className="button secondary-button"
+                        onClick={handleGoogleLoginClick}
+                        disabled={loading}
+                    >
+                        Continue with Google
                     </button>
                 </form>
                 <p className="auth-link">

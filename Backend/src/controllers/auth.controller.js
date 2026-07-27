@@ -1,3 +1,4 @@
+const { getAuth } = require("../config/firebaseAdmin");
 const userModel = require('../models/user.model');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -23,7 +24,8 @@ async function registerUserController(req, res) {
     const user = await userModel.create({
         username,
         email,
-        password: hash
+        password: hash,
+        provider: "local"
     });
 
     const token = jwt.sign(
@@ -108,11 +110,74 @@ async function getMeController(req, res) {
 
 }
 
+async function googleLoginController(req, res) {
+    console.log(process.env.GOOGLE_CLIENT_ID);
+    try {
+        const { idToken } = req.body;
 
+        if (!idToken) {
+            return res.status(400).json({
+                message: "ID Token is required",
+            });
+        }
+
+        const decodedToken = await getAuth().verifyIdToken(idToken);
+
+        console.log(decodedToken);
+        
+        const email = decodedToken.email;
+        const name = decodedToken.name || decodedToken.email.split("@")[0];
+        const picture = decodedToken.picture || "";
+
+        let user = await userModel.findOne({ email });
+
+        if (!user) {
+            user = await userModel.create({
+                username: name,
+                email,
+                password: null,
+                profilePicture: picture,
+                provider: "google",
+            });
+        }
+
+        const token = jwt.sign(
+            {
+                id: user._id,
+                username: user.username,
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "1d",
+            }
+        );
+
+        res.cookie("token", token);
+
+        return res.status(200).json({
+            message: "Google login successful",
+            user: {
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                profilePicture: user.profilePicture,
+                provider: user.provider,
+            },
+        });
+
+    } catch (error) {
+        console.error(error);
+
+        return res.status(401).json({
+            message: "Google authentication failed",
+        });
+    }
+}
 
 module.exports = {
     registerUserController,
     loginUserController,
     logoutUserController,
-    getMeController
+    getMeController,
+    googleLoginController,
 };
