@@ -12,34 +12,40 @@ import Interview from "./features/interview/pages/Interview.jsx";
 
 import MainLayout from "./layouts/MainLayout.jsx";
 
+import Profile from "./pages/Profile";
+
 export const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <Landing />,
-    },
-    {
-        path: "/login",
-        element: <Login />,
-    },
-    {
-        path: "/register",
-        element: <Register />,
-    },
-    {
-        element: (
-            <Protected>
-                <MainLayout />
-            </Protected>
-        ),
-        children: [
-            {
-                path: "/dashboard",
-                element: <Dashboard />,
-            },
-            {
-                path: "/interview/:interviewId",
-                element: <Interview />,
-            },
-        ],
-    },
+  {
+    path: "/",
+    element: <Landing />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
+  },
+  {
+    element: (
+      <Protected>
+        <MainLayout />
+      </Protected>
+    ),
+    children: [
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "/interview/:interviewId",
+        element: <Interview />,
+      },
+    ],
+  },
+  {
+    path: "/profile",
+    element: <Profile />
+  },
 ]);

@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react'
 import '../style/interview.scss'
 import { useInterview } from '../hooks/useInterview.js'
 import { useParams } from 'react-router-dom'
-import Navbar from '../../../components/Navbar/Navbar.jsx'
-
 
 
 const NAV_ITEMS = [
@@ -92,7 +90,6 @@ const Interview = () => {
     return (
         <>
             
-            <Navbar />
             <div className='interview-page'>
                 <div className='interview-layout'>
 

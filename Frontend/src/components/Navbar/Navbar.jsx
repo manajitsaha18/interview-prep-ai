@@ -4,6 +4,7 @@ import { useAuth } from "../../features/auth/hooks/useAuth";
 import { useState, useEffect, useRef } from "react";
 import ConfirmationModal from "../ConfirmationModal";
 
+
 const Navbar = () => {
     const navigate = useNavigate();
 
@@ -73,7 +74,7 @@ const Navbar = () => {
                     className="navbar__brand"
                     onClick={() => navigate("/")}
                 >
-                    InterviewPrep <span className="highlight">AI</span>
+                    Interview Prep <span className="highlight">&nbsp;AI</span>
                 </div>
 
                 {!user ? (
