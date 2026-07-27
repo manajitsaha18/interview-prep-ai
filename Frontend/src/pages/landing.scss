@@ -8,7 +8,7 @@ $blue: #4F8DFF;
 $radius: 14px;
 $ease: cubic-bezier(0.16, 1, 0.3, 1);
 $btn-height: 40px;
-$font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+$font-stack: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
 .landing-page {
     min-height: 100vh;
@@ -37,7 +37,11 @@ $font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, s
     font-size: 13.5px;
     border: none;
     cursor: pointer;
-    transition: transform 0.2s $ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    transition:
+        transform 0.2s $ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 
     &--ghost {
         background: rgba(255, 255, 255, 0.04);
@@ -65,49 +69,6 @@ $font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, s
     }
 }
 
-// ---- Nav ----
-.landing-nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 22px 56px;
-    border-bottom: 1px solid $border;
-
-    @media (max-width: 640px) {
-        padding: 18px 24px;
-    }
-
-    &__brand {
-        font-weight: 700;
-        font-size: 20px;
-    }
-
-    &__links {
-        display: flex;
-        align-items: center;
-        gap: 32px;
-
-        @media (max-width: 480px) {
-            gap: 18px;
-        }
-    }
-}
-
-.nav-link {
-    background: none;
-    border: none;
-    color: $text-secondary;
-    font-size: 13.5px;
-    font-weight: 500;
-    cursor: pointer;
-    padding: 0;
-    transition: color 0.2s ease;
-
-    &:hover {
-        color: #fff;
-    }
-}
-
 // ---- Hero ----
 .landing-hero {
     display: grid;
@@ -127,7 +88,7 @@ $font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, s
 
     &__content {
         h1 {
-           font-size: 42px;
+            font-size: 42px;
             font-weight: 800;
             line-height: 1.2;
             margin: 22px 0 18px;
@@ -183,19 +144,19 @@ $font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, s
     font-weight: 600;
 }
 
-// ---- Hero preview placeholder ----
 .landing-hero__preview {
     position: relative;
-
     width: 100%;
-    max-width: 900px;   // Increase this
+    max-width: 900px;
     margin: 0 auto;
 }
+
 .preview-glow {
     position: absolute;
     inset: -30px;
-    background: radial-gradient(circle at 30% 20%, rgba(255, 62, 135, 0.2), transparent 55%),
-                radial-gradient(circle at 80% 80%, rgba(79, 141, 255, 0.18), transparent 55%);
+    background:
+        radial-gradient(circle at 30% 20%, rgba(255, 62, 135, 0.2), transparent 55%),
+        radial-gradient(circle at 80% 80%, rgba(79, 141, 255, 0.18), transparent 55%);
     filter: blur(28px);
     z-index: 0;
 }
@@ -204,16 +165,14 @@ $font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, s
     width: 100%;
     height: auto;
     display: block;
-
     border-radius: 20px;
-    border: 1px solid rgba(255,255,255,.08);
-
-    box-shadow: 0 30px 80px rgba(0,0,0,.45);
-    transition: .3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+    transition: 0.3s ease;
 }
 
-.dashboard-preview:hover{
-    transform:translateY(-6px);
+.dashboard-preview:hover {
+    transform: translateY(-6px);
 }
 
 // ---- Section heading ----
@@ -238,7 +197,7 @@ $font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, s
     }
 }
 
-// ---- How to get the best results (timeline) ----
+// ---- Timeline ----
 .landing-steps {
     max-width: 720px;
     margin: 0 auto;
@@ -312,18 +271,18 @@ $font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, s
         margin-bottom: 8px;
 
         h4 {
+            margin: 0;
             font-size: 15.5px;
             font-weight: 700;
-            margin: 0;
         }
     }
 
     &__content > p {
+        margin: 0;
+        max-width: 460px;
         color: $text-secondary;
         font-size: 13.5px;
         line-height: 1.6;
-        margin: 0;
-        max-width: 460px;
     }
 
     &__tags {
@@ -335,10 +294,10 @@ $font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, s
 }
 
 .step-badge {
-    font-size: 10.5px;
-    font-weight: 700;
     padding: 3px 10px;
     border-radius: 999px;
+    font-size: 10.5px;
+    font-weight: 700;
     letter-spacing: 0.01em;
 
     &--pink {
@@ -353,49 +312,56 @@ $font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, s
 }
 
 .tag-pill {
-    font-size: 12px;
-    color: $text-secondary;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid $border;
     padding: 6px 14px;
     border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid $border;
+    color: $text-secondary;
+    font-size: 12px;
 }
 
-// ---- Final CTA ----
+// ---- CTA ----
 .landing-cta {
     max-width: 760px;
     margin: 0 auto;
     padding: 0 24px 112px;
 
     &__card {
-        border-radius: 20px;
         padding: 52px 32px;
+        border-radius: 20px;
         text-align: center;
         border: 1px solid $border;
-        background: linear-gradient(135deg, rgba(255, 62, 135, 0.08), rgba(79, 141, 255, 0.08));
+        background: linear-gradient(
+            135deg,
+            rgba(255, 62, 135, 0.08),
+            rgba(79, 141, 255, 0.08)
+        );
 
         h2 {
+            margin: 0 0 12px;
             font-size: 26px;
             font-weight: 800;
-            margin: 0 0 12px;
         }
 
         p {
+            margin: 0 0 26px;
             color: $text-secondary;
             font-size: 14.5px;
-            margin: 0 0 26px;
         }
     }
 }
 
 // ---- Footer ----
 .landing-footer {
-    border-top: 1px solid $border;
-    padding: 28px 24px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
+
+    padding: 28px 24px;
+
+    border-top: 1px solid $border;
+
     color: $text-muted;
     font-size: 12.5px;
 

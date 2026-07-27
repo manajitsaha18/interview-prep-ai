@@ -4,7 +4,6 @@ import "../style/dashboard.scss"
 import { useInterview } from '../hooks/useInterview.js'
 import { useNavigate } from 'react-router-dom'
 import ConfirmationModal from '../../../components/ConfirmationModal.jsx'
-import Navbar from "../../../components/Navbar";
 
 const Dashboard = () => {
 
@@ -59,7 +58,7 @@ const Dashboard = () => {
 
     return (
         <>
-            <Navbar />
+            
             <div className='dashboard-page'>
 
                 {/* Page Header */}
@@ -291,7 +290,7 @@ your interview strategy."
                     message="This interview report will be permanently deleted."
                     confirmText="Delete"
                     onConfirm={handleDeleteInterview}
-                    onClose={() => setShowDeleteModal(false)}
+                    onClose={() => setDeleteModalOpen(false)}
                 />
             </div>
         </>

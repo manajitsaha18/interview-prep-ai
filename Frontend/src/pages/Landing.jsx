@@ -2,6 +2,7 @@ import './landing.scss'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../features/auth/hooks/useAuth'
 import dashboardPreview from "../assets/dashboard.png";
+import Navbar from '../components/Navbar/Navbar';
 
 const steps = [
     {
@@ -50,17 +51,7 @@ const Landing = () => {
     return (
         <div className='landing-page'>
 
-            {/* Navbar */}
-            <nav className='landing-nav'>
-                <div className='landing-nav__brand' onClick={() => navigate("/")}>
-                    Interview Prep <span className='highlight'>AI</span>
-                </div>
-                <div className='landing-nav__links'>
-                    <button className='nav-link' onClick={scrollToTop}>Home</button>
-                    <button className='nav-link' onClick={scrollToAbout}>About</button>
-                    <button className='nav-link' onClick={() => navigate('/login')}>Login</button>
-                </div>
-            </nav>
+           <Navbar />
 
             {/* Hero */}
             <header className='landing-hero'>
