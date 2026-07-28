@@ -241,27 +241,6 @@ $font-stack:     system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Robot
     }
 }
 
-// ── OR Divider ────────────────────────────────────────────────────────────────
-.or-divider {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    color: $text-muted;
-    font-size: 0.75rem;
-
-    &::before,
-    &::after {
-        content: '';
-        flex: 1;
-        height: 1px;
-        background-color: $border-color;
-    }
-
-    span {
-        white-space: nowrap;
-    }
-}
-
 // ── Self Description ──────────────────────────────────────────────────────────
 .self-description {
     display: flex;
@@ -464,4 +443,121 @@ $font-stack:     system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Robot
     margin: 0 auto;
     line-height: 1.6;
     font-size: 0.7rem;
+}
+
+
+
+// ── Responsive Dashboard ─────────────────────────────────────────────────────
+
+@media (max-width: 768px) {
+
+    .dashboard-page {
+        padding: 2rem 1rem;
+        gap: 1.5rem;
+        justify-content: flex-start;
+    }
+
+    // Page heading
+    .page-header {
+        h1 {
+            font-size: 1.8rem;
+            line-height: 1.2;
+        }
+
+        p {
+            font-size: 0.85rem;
+            max-width: 100%;
+            padding: 0 0.5rem;
+        }
+    }
+
+
+    // Main interview form
+    .interview-card {
+        border-radius: 0.75rem;
+
+        &__body {
+            flex-direction: column;
+            min-height: unset;
+        }
+
+        &__footer {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 1rem;
+            padding: 1rem;
+
+            .footer-info {
+                text-align: center;
+            }
+        }
+    }
+
+
+    // Hide desktop vertical divider
+    .panel-divider {
+        width: 100%;
+        height: 1px;
+    }
+
+
+    // Panels
+    .panel {
+        width: 100%;
+        padding: 1.25rem;
+
+        &__textarea {
+            min-height: 220px;
+
+            &--short {
+                min-height: 110px;
+                height: 110px;
+            }
+        }
+
+        &--left {
+
+            .char-counter {
+                bottom: 2rem;
+                right: 1.75rem;
+            }
+        }
+    }
+
+
+    // Generate button
+    .generate-btn {
+        width: 100%;
+        justify-content: center;
+        min-height: 44px;
+    }
+
+
+    // Recent interview reports
+    .recent-reports {
+
+        h2 {
+            font-size: 1.25rem;
+        }
+
+        .reports-list {
+            flex-direction: column;
+            flex-wrap: nowrap;
+
+            .report-item {
+                width: 100%;
+                flex: none;
+            }
+        }
+    }
+
+
+    // Empty history
+    .empty-state {
+        padding: 2rem 1rem;
+
+        .empty-icon {
+            font-size: 48px;
+        }
+    }
 }

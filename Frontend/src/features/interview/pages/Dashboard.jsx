@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { toast } from "sonner";
 import "../style/dashboard.scss"
 import { useInterview } from '../hooks/useInterview.js'
@@ -7,7 +7,7 @@ import ConfirmationModal from '../../../components/ConfirmationModal.jsx'
 
 const Dashboard = () => {
 
-    const { loading, generateReport, reports, removeInterviewReport } = useInterview()
+    const { loading, generateReport, reports, getReports, removeInterviewReport } = useInterview()
     const [jobDescription, setJobDescription] = useState("")
     const [selfDescription, setSelfDescription] = useState("")
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -16,6 +16,9 @@ const Dashboard = () => {
     const resumeInputRef = useRef()
 
     const navigate = useNavigate()
+    useEffect(() => {
+        getReports()
+    }, [])
 
     const handleGenerateReport = async () => {
         try {
@@ -58,7 +61,7 @@ const Dashboard = () => {
 
     return (
         <>
-            
+
             <div className='dashboard-page'>
 
                 {/* Page Header */}

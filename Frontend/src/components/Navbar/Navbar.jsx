@@ -8,7 +8,7 @@ import ConfirmationModal from "../ConfirmationModal";
 const Navbar = () => {
     const navigate = useNavigate();
 
-    const { user, handleLogout } = useAuth();
+    const { user, loading, handleLogout } = useAuth();
 
     const [showMenu, setShowMenu] = useState(false);
     const [logoutModalOpen, setLogoutModalOpen] = useState(false);
@@ -77,88 +77,90 @@ const Navbar = () => {
                     Interview Prep <span className="highlight">&nbsp;AI</span>
                 </div>
 
-                {!user ? (
-                    <div className="navbar__links">
-                        <button
-                            className="nav-link"
-                            onClick={scrollToTop}
-                        >
-                            Home
-                        </button>
+                {!loading && (
+                    !user ? (
+                        <div className="navbar__links">
+                            <button
+                                className="nav-link"
+                                onClick={scrollToTop}
+                            >
+                                Home
+                            </button>
 
-                        <button
-                            className="nav-link"
-                            onClick={scrollToAbout}
-                        >
-                            About
-                        </button>
+                            <button
+                                className="nav-link"
+                                onClick={scrollToAbout}
+                            >
+                                About
+                            </button>
 
-                        <button
-                            className="nav-link"
-                            onClick={() => navigate("/login")}
+                            <button
+                                className="nav-link"
+                                onClick={() => navigate("/login")}
+                            >
+                                Login
+                            </button>
+                        </div>
+                    ) : (
+                        <div
+                            className="navbar__profile"
+                            ref={menuRef}
                         >
-                            Login
-                        </button>
-                    </div>
-                ) : (
-                    <div
-                        className="navbar__profile"
-                        ref={menuRef}
-                    >
-                        <button
-                            className="profile-btn"
-                            onClick={() =>
-                                setShowMenu((prev) => !prev)
-                            }
-                        >
-                            {user.profilePicture ? (
-                                <img
-                                    src={user.profilePicture}
-                                    alt={user.username}
-                                    className="profile-avatar"
-                                />
-                            ) : (
-                                <div className="profile-avatar profile-avatar--fallback">
-                                    {user.username
-                                        .charAt(0)
-                                        .toUpperCase()}
+                            <button
+                                className="profile-btn"
+                                onClick={() =>
+                                    setShowMenu((prev) => !prev)
+                                }
+                            >
+                                {user.profilePicture ? (
+                                    <img
+                                        src={user.profilePicture}
+                                        alt={user.username}
+                                        className="profile-avatar"
+                                    />
+                                ) : (
+                                    <div className="profile-avatar profile-avatar--fallback">
+                                        {user.username
+                                            .charAt(0)
+                                            .toUpperCase()}
+                                    </div>
+                                )}
+                            </button>
+
+                            {showMenu && (
+                                <div className="profile-menu">
+                                    <div className="profile-menu__header">
+                                        <h4>{user.username}</h4>
+                                        <p>{user.email}</p>
+                                    </div>
+
+                                    <div className="profile-menu__actions">
+                                        <button
+                                            className="profile-menu__item"
+                                            onClick={() => {
+                                                setShowMenu(false);
+                                                navigate("/profile");
+                                            }}
+                                        >
+                                            <i className="ti ti-user" />
+                                            <span>My Profile</span>
+                                        </button>
+
+                                        <button
+                                            className="profile-menu__item profile-menu__logout"
+                                            onClick={() => {
+                                                setShowMenu(false);
+                                                setLogoutModalOpen(true);
+                                            }}
+                                        >
+                                            <i className="ti ti-logout-2" />
+                                            <span>Logout</span>
+                                        </button>
+                                    </div>
                                 </div>
                             )}
-                        </button>
-
-                        {showMenu && (
-                            <div className="profile-menu">
-                                <div className="profile-menu__header">
-                                    <h4>{user.username}</h4>
-                                    <p>{user.email}</p>
-                                </div>
-
-                                <div className="profile-menu__actions">
-                                    <button
-                                        className="profile-menu__item"
-                                        onClick={() => {
-                                            setShowMenu(false);
-                                            navigate("/profile");
-                                        }}
-                                    >
-                                        <i className="ti ti-user" />
-                                        <span>My Profile</span>
-                                    </button>
-
-                                    <button
-                                        className="profile-menu__item profile-menu__logout"
-                                        onClick={() => {
-                                            setShowMenu(false);
-                                            setLogoutModalOpen(true);
-                                        }}
-                                    >
-                                        <i className="ti ti-logout-2" />
-                                        <span>Logout</span>
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-                    </div>
+                        </div>
+                    )
                 )}
             </nav>
 

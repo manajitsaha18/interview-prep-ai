@@ -1,11 +1,12 @@
-import {useAuth} from '../hooks/useAuth'
-import {Navigate} from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
+import { Navigate } from 'react-router-dom'
 
-const Protected = ({children}) => {
-    const {loading, user} = useAuth()
+const Protected = ({ children }) => {
+    const { loading, user } = useAuth()
 
+    // Wait silently while checking the existing session
     if (loading) {
-        return (<main><h1>Loading...</h1></main>)
+        return null
     }
 
     if (!user) {

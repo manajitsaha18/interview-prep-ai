@@ -1,13 +1,13 @@
 import { getAllInterviewReports, generateInterviewReport, getInterviewReportById, generateResumePdf, deleteInterviewReport } from "../services/interview.api"
-import { useContext, useEffect } from "react"
+import { useContext, useState } from "react"
 import { InterviewContext } from "../interview.context"
-import { useParams } from "react-router-dom"
+
 
 
 export const useInterview = () => {
 
     const context = useContext(InterviewContext)
-    const { interviewId } = useParams()
+    const [resumeLoading, setResumeLoading] = useState(false)
 
     if (!context) {
         throw new Error("useInterview must be used within an InterviewProvider")
@@ -63,22 +63,38 @@ export const useInterview = () => {
 
 
     const getResumePdf = async (interviewReportId) => {
-        setLoading(true)
+        setResumeLoading(true)
+
         try {
-            const response = await generateResumePdf({ interviewReportId })
-            const url = window.URL.createObjectURL(new Blob([response], { type: "application/pdf" }))
+            const response = await generateResumePdf({
+                interviewReportId
+            })
+
+            const blob = new Blob(
+                [response],
+                { type: "application/pdf" }
+            )
+
+            const url = window.URL.createObjectURL(blob)
+
             const link = document.createElement("a")
+
             link.href = url
-            link.setAttribute("download", `resume_${interviewReportId}.pdf`)
+            link.download = `resume_${interviewReportId}.pdf`
+
+            link.style.display = "none"
             document.body.appendChild(link)
+
             link.click()
-            
-        }
-        catch (error) {
-            console.error(error)
+
+            document.body.removeChild(link)
+            window.URL.revokeObjectURL(url)
+
+        } catch (error) {
+            console.error("Resume generation failed:", error)
             throw error
         } finally {
-            setLoading(false)
+            setResumeLoading(false)
         }
     }
 
@@ -108,19 +124,15 @@ export const useInterview = () => {
 
     }
 
-    useEffect(() => {
-        if (interviewId) {
-            getReportById(interviewId)
-        } else {
-            getReports()
-        }
-    }, [interviewId])
+
 
 
     return {
         loading,
+        resumeLoading,
         report,
         reports,
+        setReport,
         setReports,
         generateReport,
         getReportById,
