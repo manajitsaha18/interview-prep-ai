@@ -75,7 +75,7 @@ Instructions:
 
     try {
 
-        
+
         const response = await generateContentWithRetry({
             model: "gemini-3.6-flash",
             contents: prompt,
@@ -93,7 +93,7 @@ Instructions:
             primaryError.status ||
             primaryError.response?.status;
 
-        
+
         if (status === 503 || status === 429) {
 
             console.warn(
@@ -102,7 +102,7 @@ Instructions:
 
             try {
 
-               
+
                 const fallbackResponse = await ai.models.generateContent({
                     model: "gemini-3.5-flash-lite",
                     contents: prompt,
@@ -148,7 +148,7 @@ async function generatePdfFromHtml(htmlContent) {
         const page = await browser.newPage();
 
         await page.setContent(htmlContent, {
-            waitUntil: "networkidle0"
+            waitUntil: "domcontentloaded"
         });
 
         const pdfBuffer = await page.pdf({
@@ -795,7 +795,7 @@ Do NOT return HTML, Markdown, or additional commentary.
 
     try {
 
-        
+
         const response = await generateContentWithRetry({
             model: "gemini-3.6-flash",
             contents: prompt,
@@ -823,7 +823,7 @@ Do NOT return HTML, Markdown, or additional commentary.
 
             try {
 
-                
+
                 const fallbackResponse = await ai.models.generateContent({
                     model: "gemini-3.5-flash-lite",
                     contents: prompt,
