@@ -1,7 +1,7 @@
 import { toast } from "sonner";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../auth.context.jsx";
-import { login, register, logout, getMe, googleLogin } from "../services/auth.api.js";
+import { login, register, logout, googleLogin } from "../services/auth.api.js";
 
 export const useAuth = () => {
 
@@ -84,21 +84,7 @@ export const useAuth = () => {
     }
 
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const data = await getMe();
-                setUser(data.user);
-            } catch {
-                setUser(null);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchUser();
-
-    }, []);
+    
 
     return { user, loading, handleLogin, handleRegister, handleLogout, handleGoogleLogin };
 
