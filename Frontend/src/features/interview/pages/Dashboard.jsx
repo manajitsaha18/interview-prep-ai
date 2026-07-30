@@ -23,19 +23,44 @@ const Dashboard = () => {
     const handleGenerateReport = async () => {
         try {
             const resumeFile = resumeInputRef.current.files[0];
+
             const data = await generateReport({
                 jobDescription,
                 selfDescription,
                 resumeFile
             });
+
             toast.success("Interview report generated successfully!");
+
             navigate(`/interview/${data._id}`);
+
         } catch (error) {
+
             console.error(error);
-            toast.error(
-                error.response?.data?.message ||
-                "Failed to generate interview report."
-            );
+
+            const status = error.response?.status;
+            const message = error.response?.data?.message;
+
+            if (status === 503) {
+
+                toast.error(
+                    message ||
+                    "AI service is temporarily unavailable. Please try again shortly."
+                );
+
+            } else if (status === 429) {
+
+                toast.error(
+                    "AI request limit reached. Please try again shortly."
+                );
+
+            } else {
+
+                toast.error(
+                    message ||
+                    "Failed to generate interview report. Please try again."
+                );
+            }
         }
     }
     const handleDeleteInterview = async () => {
