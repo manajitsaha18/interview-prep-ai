@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { toast } from "sonner";
 import "../style/dashboard.scss"
-import { useInterview } from '../hooks/useInterview.js'
+import { useInterview } from '../hooks/useinterview.js'
 import { useNavigate } from 'react-router-dom'
 import ConfirmationModal from '../../../components/ConfirmationModal.jsx'
 

@@ -4,7 +4,6 @@ import { Navigate } from 'react-router-dom'
 const Protected = ({ children }) => {
     const { loading, user } = useAuth()
 
-    // Wait silently while checking the existing session
     if (loading) {
         return null
     }
