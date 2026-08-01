@@ -153,7 +153,7 @@ const Dashboard = () => {
                                             </p>
 
                                             <p className="dropzone__subtitle">
-                                                PDF or DOCX (Max 3MB)
+                                                PDF (Max 3MB)
                                             </p>
                                         </>
                                     )}
@@ -163,7 +163,7 @@ const Dashboard = () => {
                                         hidden
                                         type="file"
                                         id="resume"
-                                        accept=".pdf,.docx"
+                                        accept=".pdf"
                                         onChange={(e) => {
                                             const file = e.target.files[0];
 
