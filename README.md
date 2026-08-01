@@ -2,7 +2,9 @@
 
 AI-powered full-stack interview preparation platform that analyzes job descriptions and candidate information to generate personalized interview reports, identify skill gaps, prepare role-specific interview questions, and create job-targeted resumes.
 
-![Interview Prep AI Landing Page](./screenshots/landing-page.png)
+### 🔗 Live Demo
+
+[Interview Prep AI](https://interview-prep-ai-manajit.vercel.app)
 
 ## 🛠️ Built With
 
@@ -16,12 +18,13 @@ AI-powered full-stack interview preparation platform that analyzes job descripti
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat&logo=vercel&logoColor=white)
 ![Render](https://img.shields.io/badge/Render-000000?style=flat&logo=render&logoColor=white)
 
+![Interview Prep AI Landing Page](./screenshots/landing-page.png)
 
 ## ✨ Key Features
 
-- 🎯 **Personalized Interview Preparation** — Analyzes the job description and candidate information to generate a match score, skill-gap analysis, technical and behavioral questions with suggested answers, and a preparation roadmap.
-- 📝 **Target Resume Generator** — Creates a job-targeted resume and downloads it as a PDF.
-- 🔐 **Authentication & History** — Supports email/Google authentication and lets users access or delete previous interview reports.
+- 🎯 **AI Interview Preparation** — Generates personalized interview reports based on the job description and candidate information.
+- 📝 **Target Resume Generation** — Creates a job-targeted resume and exports it as a downloadable PDF.
+- 🔐 **Authentication & Report History** — Supports email/Google authentication and lets users securely access and manage previous interview reports.
 
 ## 🖥️ Application Preview
 
@@ -39,25 +42,22 @@ The generated report includes role-specific interview preparation, skill-gap ana
 
 ## ⚙️ How It Works
 
-### 🎯 Personalized Interview Analysis
-The user starts by providing a **Job Description**, which is the only required input. They can optionally upload a **PDF/DOCX resume** and add a **self-description** for more personalized results.
+### 🎯 AI Interview Preparation
 
-The backend extracts the resume content and combines the available candidate information with the job description. This data is sent to **Gemini AI**, which returns a structured interview report containing a **match score, skill gaps, technical and behavioral questions with suggested answers, and a preparation roadmap**.
+Users provide a **Job Description** and can optionally upload a **PDF resume** or add a **self-description**. The backend combines the available candidate information and sends it to **Gemini AI**, which generates a personalized interview report containing a match score, skill-gap analysis, interview questions with suggested answers, and a preparation roadmap.
 
-### 📝 Job-Targeted Resume Generation
-From the generated interview report, users can create a resume specifically targeted to the job description. Gemini generates structured resume content using the available candidate information and job requirements.
+### 📝 Target Resume Generation
 
-The backend converts the generated content into a formatted document using **Puppeteer** and returns it as a downloadable **PDF resume**.
+Users can generate a resume tailored to the target job directly from the interview report. **Gemini AI** creates structured resume content, which is converted into a downloadable **PDF** using **Puppeteer**.
 
 ### 🔐 Authentication & Report History
-Users can create an account using **email/password or Google sign-in**. Email/password credentials are secured with bcrypt, while authenticated sessions are managed using **JWTs stored in HTTP-only cookies**.
 
-Generated interview reports are associated with the authenticated user and stored in **MongoDB**, allowing users to revisit or delete their previous reports from the History section.
+Users can sign up with **email/password** or **Google Authentication**. Passwords are securely hashed with **bcrypt**, while **JWTs stored in HTTP-only cookies** protect authenticated sessions. Generated interview reports are stored in **MongoDB**, allowing users to revisit or delete them at any time.
 
-### 🔄 Reliable AI Integration
-Gemini responses are generated in a structured format so the frontend can reliably display different parts of the interview report.
+### 🔄 Reliable AI Processing
 
-The backend also handles temporary AI-service failures with **retry logic and a secondary Gemini model fallback**. If the service remains unavailable, the application returns a user-friendly error instead of failing silently.
+The application requests structured responses from **Gemini AI** to ensure consistent output. The backend also includes **retry logic and secondary-model fallback** to handle temporary AI service failures and rate limits.
+
 ## 📁 Project Structure
 
 ```text
