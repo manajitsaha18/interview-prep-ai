@@ -4,7 +4,7 @@ AI-powered full-stack interview preparation platform that analyzes job descripti
 
 ### 🔗 Live Demo
 
-[Interview Prep AI](https://interview-prep-ai-manajit.vercel.app)
+[Interview Prep AI](https://interview-prep-ai-lovat.vercel.app)
 
 ## 🛠️ Built With
 
